@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import time
 
-from attr.validators import disabled
-from streamlit import columns
 by_def_enc = [ 'koi8_r']
 
 if "encodings" not in st.session_state:
@@ -366,9 +363,7 @@ elif st.session_state.cur_level == 'Предобработка данных':
                     cont_par_btn = st.container(horizontal_alignment="center", horizontal=True)
                 btn_test = cont_par_btn.button('T', help='Протестировать', key='btn_test_type', disabled=st.session_state.state in ('подтв', 'подтв_type', 'подтв_save'))
                 btn_save = cont_par_btn.button('V', help='Сохранить', key='btn_save_type', disabled=st.session_state.state in ('mod_name'))
-                #LOG(f'кноп save press = {btn_save}; state={st.session_state.state}; new_name={new_name}')
                 btn_canc = cont_par_btn.button('C', help='Отмена', key='btn_canc_type')
-                #LOG(f'кноп S= {btn_save}; state={st.session_state.state}; new_name={new_name}')
                 if btn_test or st.session_state.state in ('подтв', 'подтв_type', 'подтв_save'):
                     LOG(f'3-0 {btn_mod_name}; state={st.session_state.state} {new_type}')
                     if new_type == 'Текст' and st.session_state.state != 'подтв':
@@ -387,7 +382,6 @@ elif st.session_state.cur_level == 'Предобработка данных':
                         LOG(f'1. {new_type}; state={st.session_state.state}')
                         if st.session_state.state not in ('подтв_type', 'подтв_save'):
                             with st.spinner("анализ значений столбца"):
-                                #st.session_state.ch_type_col = st.session_state.df[sel_col].map(to_date)
                                 df_lst = pd.DataFrame()
                                 df_lst['вх'] = st.session_state.df[sel_col].head(2000)
                                 for ind in list_param_date.keys():
@@ -406,8 +400,7 @@ elif st.session_state.cur_level == 'Предобработка данных':
                             LOG(f'4. {new_type}; state={st.session_state.state}')
                             if st.session_state.df_not_eq.shape[0] > 0:
                                 LOG(f'5. больше 0. {new_type}; state={st.session_state.state}')
-                                str = f'''Найдены даты для которых необходимо указать тип 
-                                            преобразования ЯВНО.\nВ списке укажите название столбца, который соответствует нужному формату'''
+                                str = f'''В списке укажите название столбца, который соответствует нужному формату'''
                                 cont_par_par.write(str)
                                 st.session_state.state = 'подтв_save'
                                 LOG(f'6. стопим {new_type}; state={st.session_state.state}')
@@ -616,7 +609,7 @@ elif st.session_state.cur_level == 'Графики':
                         cont_gr.bar_chart(df_gr,  x=st.session_state.col_x, y=st.session_state.col_y, x_label=x_title, y_label=y_title)
                 elif type_gr =='Рассеяния':
                     with cont_gr.spinner('Отображение графика'):
-                        cont_gr.scatter_chart(df_gr, x_label=x_title, y_label=y_title)
+                        cont_gr.scatter_chart(df_gr, x=st.session_state.col_x, y=st.session_state.col_y, x_label=x_title, y_label=y_title)
             except Exception as e:
                 LOG(e)
                 cont_gr.error('Постройка данного типа графика с указанными параметрами не возможна! Попробуйте другие параметры.')
