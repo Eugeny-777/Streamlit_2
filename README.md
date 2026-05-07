@@ -12,7 +12,7 @@
 Экранная форма программы разделена на 2 части:
 - Левая часть - Выбор файла и перемещение между этапами
 - Правая часть - рабочая область выбранного этапа
-!(C:\Projects\Phyton\SF\Pandas\Streamlit_2\start_vid.png)
+!(https://github.com/Eugeny-777/Streamlit_2/blob/main/start_vid.png)
 
 
 
