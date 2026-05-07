@@ -5,9 +5,10 @@ import time
 
 from attr.validators import disabled
 from streamlit import columns
+by_def_enc = [ 'koi8_r']
 
 if "encodings" not in st.session_state:
-    st.session_state["encodings"] = [ 'koi8_r'] #'utf-8', 'cp1251',
+    st.session_state["encodings"] = by_def_enc #'utf-8', 'cp1251',
 if "separs" not in st.session_state:
     st.session_state["separs"] =  [',', ';', '\t', ' ']
 if "file" not in st.session_state:
@@ -222,6 +223,11 @@ if st.session_state.cur_level == 'Загрузка данных':
         cont_cod_lbl = st.container(horizontal_alignment="center", horizontal=True)
     cont_cod_lbl.write('доступные кодировки: ' + ', '.join(map( lambda x: '"' + x + '"', st.session_state["encodings"])))
     cod_add = cont_cod_lbl.button('+', key='btn_cod_add', help='добавить новую кодировку', disabled=st.session_state.state != 'начальное')
+    cod_bydf = cont_cod_lbl.button('R', key='btn_cod_bydf', help='восстановить начальную кодировку',
+                                  disabled=st.session_state.state != 'начальное')
+    if cod_bydf:
+        st.session_state["encodings"] = by_def_enc
+        st.rerun()
     cont_sep.write('доступные разделители' + '\t'.join(map( print_sym, st.session_state["separs"])))
     if cod_add or st.session_state['state'] == 'add_cod':
         st.session_state.state = 'add_cod'
